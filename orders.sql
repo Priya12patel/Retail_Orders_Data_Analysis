@@ -40,7 +40,7 @@ WHERE r_num<=5
 WITH cte as (
 	SELECT category, TO_CHAR(order_date, 'YYYY-MM') as order_year_month, sum(sale_price) as sales 
 	from orders
-	GROUP BY category, TO_CHAR(order_date, 'YYYY-MM')
+	GROUP BY category, order_year_month
 )
 SELECT * from (
 	SELECT *, row_number() over(partition by category ORDER BY sales desc) as r_num from cte
