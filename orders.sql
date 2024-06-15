@@ -20,32 +20,32 @@ ORDER BY total_quan desc
 LIMIT 10
 
 --4)find top 10 highest reveue generating products 
-select product_id,sum(sale_price) as sales from orders
-group by product_id
-order by sales desc
+SELECT product_id,sum(sale_price) as sales from orders
+GROUP BY product_id
+ORDER BY sales desc
 LIMIT 10
 
 
 --5)find top 5 highest selling products in each region
-with cte as (
-	select region, product_id, sum(sale_price) as sales from orders
-	group by region,product_id)
-select * from (
-	select * , row_number() over(partition by region order by sales desc) as r_num
+WITH cte as (
+	SELECT region, product_id, sum(sale_price) as sales from orders
+	GROUP BY region,product_id)
+SELECT * from (
+	SELECT * , row_number() over(partition by region ORDER BY sales desc) as r_num
 	from cte) A
-where r_num<=5
+WHERE r_num<=5
 
 
 --6)for each category which month had highest sales 
-with cte as (
-	select category, TO_CHAR(order_date, 'YYYY-MM') as order_year_month, sum(sale_price) as sales 
+WITH cte as (
+	SELECT category, TO_CHAR(order_date, 'YYYY-MM') as order_year_month, sum(sale_price) as sales 
 	from orders
-	group by category, TO_CHAR(order_date, 'YYYY-MM')
+	GROUP BY category, TO_CHAR(order_date, 'YYYY-MM')
 )
-select * from (
-	select *, row_number() over(partition by category order by sales desc) as r_num from cte
+SELECT * from (
+	SELECT *, row_number() over(partition by category ORDER BY sales desc) as r_num from cte
 ) a
-where r_num=1
+WHERE r_num=1
 
 
 
