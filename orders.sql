@@ -32,7 +32,7 @@ WITH cte as (
 	GROUP BY region,product_id)
 SELECT * from (
 	SELECT * , row_number() over(partition by region ORDER BY sales desc) as r_num
-	from cte) A
+	from cte) as A
 WHERE r_num<=5
 
 
@@ -44,7 +44,7 @@ WITH cte as (
 )
 SELECT * from (
 	SELECT *, row_number() over(partition by category ORDER BY sales desc) as r_num from cte
-) a
+) as a 
 WHERE r_num=1
 
 
